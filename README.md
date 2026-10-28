@@ -24,7 +24,7 @@ Type `catalog`, `REPORT` or `CLEAN`, a quantity from 1 to 100, then `confirm`. `
 
 Future real testing requires secure token provisioning, owner-approved test recipients and authorization for a live test. The local simulator does not read environment credentials. No credential was created or read, and no API request was made. Official API: https://core.telegram.org/bots/api
 
-`evidence/test-first.txt` shows expected missing-module failure before implementation; `evidence/current-tests.txt` shows current checks. `cover.png` is a portfolio concept cover, and `evidence/transcript.png` renders an actual offline transcript, not a Telegram screenshot.
+`evidence/current-tests.txt` shows current local checks; `evidence/review-final.md` records the review. `cover.png` is a portfolio concept cover, and `evidence/transcript.png` renders an actual offline transcript, not a Telegram screenshot.
 
 ## Real transport code — no live verification
 
