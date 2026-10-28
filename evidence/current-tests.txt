@@ -7,6 +7,8 @@ test_transport_shape_and_private_only (test_bot.Tests.test_transport_shape_and_p
 test_sqlite_error_is_clean_and_network_not_called (test_live_once.Tests.test_sqlite_error_is_clean_and_network_not_called) ... ok
 test_uncertain_blocks_all_network (test_live_once.Tests.test_uncertain_blocks_all_network) ... ok
 test_duplicate_and_restart (test_recovery.Tests.test_duplicate_and_restart) ... ok
+test_process_exit_after_fake_remote_acceptance (test_recovery.Tests.test_process_exit_after_fake_remote_acceptance) ... ok
+test_successful_send_then_delivered_write_fails (test_recovery.Tests.test_successful_send_then_delivered_write_fails) ... ok
 test_unapproved_recipient (test_recovery.Tests.test_unapproved_recipient) ... ok
 test_uncertain_is_not_retried (test_recovery.Tests.test_uncertain_is_not_retried) ... ok
 test_api_and_json_failure (test_transport.Tests.test_api_and_json_failure) ... ok
@@ -15,6 +17,6 @@ test_get_updates_arguments (test_transport.Tests.test_get_updates_arguments) ...
 test_request_shape_and_allowlist (test_transport.Tests.test_request_shape_and_allowlist) ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 0.010s
+Ran 17 tests in 0.047s
 
 OK
