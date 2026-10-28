@@ -1,0 +1,17 @@
+OFFLINE SIMULATION — synthetic inquiries only. Type quit to exit.
+You > Bot > Choose catalog or faq. This is a synthetic offline simulation.
+You > Bot > REPORT: Weekly reporting setup
+CLEAN: CSV cleanup consultation
+You > Bot > This synthetic demo records inquiries only. No payments or real service booking. Type cancel to reset.
+You > Bot > Enter quantity from 1 to 100.
+You > Bot > Preview: Weekly reporting setup x 2. Type confirm or cancel.
+You > Bot > Recorded in the mock admin log. No Telegram message was sent.
+You > Bot > Choose catalog or faq; select a service before confirming.
+You > [
+  {
+    "id": 1,
+    "service": "REPORT",
+    "quantity": 2,
+    "status": "mock_admin_record"
+  }
+]

@@ -1,0 +1,8 @@
+/start
+catalog
+faq
+REPORT
+2
+confirm
+confirm
+quit

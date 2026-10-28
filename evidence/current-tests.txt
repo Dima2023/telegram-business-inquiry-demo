@@ -1,0 +1,20 @@
+test_errors_cancel_and_isolation (test_bot.Tests.test_errors_cancel_and_isolation) ... ok
+test_faq_keeps_state (test_bot.Tests.test_faq_keeps_state) ... ok
+test_full_flow_and_repeat_confirm (test_bot.Tests.test_full_flow_and_repeat_confirm) ... ok
+test_malformed_updates (test_bot.Tests.test_malformed_updates) ... ok
+test_oversize_quantity (test_bot.Tests.test_oversize_quantity) ... ok
+test_transport_shape_and_private_only (test_bot.Tests.test_transport_shape_and_private_only) ... ok
+test_sqlite_error_is_clean_and_network_not_called (test_live_once.Tests.test_sqlite_error_is_clean_and_network_not_called) ... ok
+test_uncertain_blocks_all_network (test_live_once.Tests.test_uncertain_blocks_all_network) ... ok
+test_duplicate_and_restart (test_recovery.Tests.test_duplicate_and_restart) ... ok
+test_unapproved_recipient (test_recovery.Tests.test_unapproved_recipient) ... ok
+test_uncertain_is_not_retried (test_recovery.Tests.test_uncertain_is_not_retried) ... ok
+test_api_and_json_failure (test_transport.Tests.test_api_and_json_failure) ... ok
+test_errors_are_redacted_and_not_retried (test_transport.Tests.test_errors_are_redacted_and_not_retried) ... ok
+test_get_updates_arguments (test_transport.Tests.test_get_updates_arguments) ... ok
+test_request_shape_and_allowlist (test_transport.Tests.test_request_shape_and_allowlist) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.010s
+
+OK
