@@ -22,7 +22,7 @@ This was a happy-path run. Crash and restart behaviour is covered by local tests
 - **Outbox with states:** a message is marked *uncertain* before sending and *delivered* after; if a run stops in between, the next run makes no API calls until someone checks the chat. Exactly-once delivery is not claimed.
 - **Recipient allowlist:** the bot can only write to approved chats.
 - **Secrets stay secret:** the token is read from the environment and never printed or logged; HTTP errors are redacted; redirects are disabled; system proxies are ignored unless `TELEGRAM_USE_ENV_PROXY=1` (use only a proxy you trust).
-- **21 automated tests**, including a simulated crash right after a fake Telegram API accepts a message: `python3 -m unittest discover -v`.
+- **22 automated tests**, including a simulated crash right after a fake Telegram API accepts a message: `python3 -m unittest discover -v`.
 
 ## Run it
 

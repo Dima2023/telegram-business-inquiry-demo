@@ -11,6 +11,7 @@ test_process_exit_after_fake_remote_acceptance (test_recovery.Tests.test_process
 test_successful_send_then_delivered_write_fails (test_recovery.Tests.test_successful_send_then_delivered_write_fails) ... ok
 test_unapproved_recipient (test_recovery.Tests.test_unapproved_recipient) ... ok
 test_uncertain_is_not_retried (test_recovery.Tests.test_uncertain_is_not_retried) ... ok
+test_connection_is_read_only (test_state_summary.Tests.test_connection_is_read_only) ... ok
 test_missing_file_is_not_created (test_state_summary.Tests.test_missing_file_is_not_created) ... ok
 test_summary_counts_inquiries_and_hides_chats_and_texts (test_state_summary.Tests.test_summary_counts_inquiries_and_hides_chats_and_texts) ... ok
 test_env_proxy_used_only_when_opted_in (test_transport.ProxyOptInTests.test_env_proxy_used_only_when_opted_in) ... ok
@@ -21,6 +22,6 @@ test_get_updates_arguments (test_transport.Tests.test_get_updates_arguments) ...
 test_request_shape_and_allowlist (test_transport.Tests.test_request_shape_and_allowlist) ... ok
 
 ----------------------------------------------------------------------
-Ran 21 tests in 0.101s
+Ran 22 tests in 0.097s
 
 OK
