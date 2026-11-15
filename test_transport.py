@@ -34,3 +34,21 @@ class Tests(unittest.TestCase):
   api=TelegramAPI('123:TEST_ONLY',allowed_chats={7},sender=send)
   self.assertEqual(api.get_updates(50),[]); self.assertEqual(seen[0]['offset'],50)
 if __name__=='__main__':unittest.main()
+
+
+class ProxyOptInTests(unittest.TestCase):
+    def https_proxy_for(self, flag):
+        import os, urllib.request
+        from unittest.mock import patch
+        env = {k: v for k, v in os.environ.items() if 'proxy' not in k.lower()}
+        env.update({'TELEGRAM_USE_ENV_PROXY': flag, 'HTTPS_PROXY': 'http://proxy.example:3128'})
+        with patch.dict(os.environ, env, clear=True):
+            api = TelegramAPI('1:abc', {1})
+        handlers = [h for h in api._sender.__self__.handlers if isinstance(h, urllib.request.ProxyHandler)]
+        return handlers[0].proxies.get('https') if handlers else None
+
+    def test_proxies_ignored_by_default(self):
+        self.assertIsNone(self.https_proxy_for(''))
+
+    def test_env_proxy_used_only_when_opted_in(self):
+        self.assertEqual(self.https_proxy_for('1'), 'http://proxy.example:3128')

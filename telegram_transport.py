@@ -1,5 +1,6 @@
 """Explicit HTTPS transport. Importing this module never reads credentials or calls APIs."""
 import json
+import os
 import re
 import urllib.request
 
@@ -18,7 +19,10 @@ class TelegramAPI:
             raise ValueError('Explicit integer test chat allowlist required')
         self._token=token
         self.allowed_chats=frozenset(allowed_chats)
-        self._sender=sender or urllib.request.build_opener(urllib.request.ProxyHandler({}),NoRedirect()).open
+        # Proxies are ignored by default. Set TELEGRAM_USE_ENV_PROXY=1 to use HTTPS_PROXY from the
+        # environment (for networks where only a proxy reaches the internet). Redirects stay disabled.
+        proxies=None if os.environ.get('TELEGRAM_USE_ENV_PROXY')=='1' else {}
+        self._sender=sender or urllib.request.build_opener(urllib.request.ProxyHandler(proxies),NoRedirect()).open
 
     def _call(self, method, payload):
         request=urllib.request.Request('https://api.telegram.org/bot'+self._token+'/'+method,
