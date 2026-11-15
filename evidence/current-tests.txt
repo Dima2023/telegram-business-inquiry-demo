@@ -21,6 +21,6 @@ test_get_updates_arguments (test_transport.Tests.test_get_updates_arguments) ...
 test_request_shape_and_allowlist (test_transport.Tests.test_request_shape_and_allowlist) ... ok
 
 ----------------------------------------------------------------------
-Ran 21 tests in 0.103s
+Ran 21 tests in 0.101s
 
 OK

@@ -19,8 +19,10 @@ class Tests(unittest.TestCase):
             for ident, text in enumerate(['/start', 'catalog', 'REPORT', '2', 'confirm', 'confirm'], 1):
                 box.accept({'update_id': ident, 'message': {'chat': {'id': CHAT, 'type': 'private'}, 'text': text}})
             box.close()
-            lines = summary(str(path))
             before = path.read_bytes()
+            lines = summary(str(path))
+            after = path.read_bytes()
+            leftovers = sorted(p.name for p in Path(tmp).iterdir())
         self.assertEqual(lines[0], 'updates processed: 6')
         self.assertTrue(lines[1].startswith('outbox by status: pending '))
         self.assertEqual(lines[2:], ['inquiries recorded: 1',
@@ -28,7 +30,8 @@ class Tests(unittest.TestCase):
         text = '\n'.join(lines)
         for secret in (str(CHAT), str(ADMIN), 'SYNTHETIC TEST INQUIRY', 'Preview'):
             self.assertNotIn(secret, text)
-        self.assertTrue(before)  # file was readable; summary opened it read-only
+        self.assertEqual(before, after)  # the state file is not modified
+        self.assertEqual(leftovers, ['state.db'])  # no journal or WAL files left behind
 
     def test_missing_file_is_not_created(self):
         with tempfile.TemporaryDirectory() as tmp:
