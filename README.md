@@ -2,7 +2,7 @@
 
 # Telegram inquiry bot with a safe delivery log
 
-A small business bot: the customer picks a service from the catalog, enters a quantity, sees a preview and confirms. The inquiry is recorded once and the owner gets a notification in Telegram. Built so that a crash or a repeated message never creates duplicate orders or double sends.
+A small business bot: the customer picks a service from the catalog, enters a quantity, sees a preview and confirms. The inquiry is recorded and the owner gets a notification in Telegram. This single-runner demo stores every processed update, so a repeated message or a restart does not create a duplicate inquiry, and a send that was interrupted is never retried blindly: it waits for a manual check.
 
 <img src="evidence/live-telegram-chat.jpg" alt="Live conversation with the bot" width="420">
 
@@ -12,15 +12,17 @@ Dedicated test bot, real Telegram Bot API ([full log](evidence/live-telegram-run
 
 - full flow: catalog → service → quantity → preview → confirm → owner notification;
 - a second `confirm` did **not** create a duplicate inquiry;
-- 12 messages delivered, 0 left in an unknown state, every update processed exactly once.
+- database after the run: 10 updates recorded, 12 outbox messages `delivered`, 0 `uncertain`, 2 inquiries.
+
+This was a happy-path run. Crash and restart behaviour is covered by local tests with a fake Telegram API, not by the live run.
 
 ## What makes it reliable
 
-- **Every update is stored before replying** (SQLite), so a restart never answers the same message twice.
-- **Outbox with states:** a message is marked *uncertain* before sending and *delivered* after; after a crash the bot stops and asks for a check instead of blindly resending.
+- **Every update is stored before replying** (SQLite), so an update that was already recorded is not processed again after a restart.
+- **Outbox with states:** a message is marked *uncertain* before sending and *delivered* after; if a run stops in between, the next run makes no API calls until someone checks the chat. Exactly-once delivery is not claimed.
 - **Recipient allowlist:** the bot can only write to approved chats.
-- **Secrets stay secret:** the token is read from the environment and never printed or logged; HTTP errors are redacted; redirects are disabled.
-- **19 automated tests**, including a crash right after Telegram accepts a message: `python3 -m unittest discover -v`.
+- **Secrets stay secret:** the token is read from the environment and never printed or logged; HTTP errors are redacted; redirects are disabled; system proxies are ignored unless `TELEGRAM_USE_ENV_PROXY=1` (use only a proxy you trust).
+- **19 automated tests**, including a simulated crash right after a fake Telegram API accepts a message: `python3 -m unittest discover -v`.
 
 ## Run it
 
@@ -28,7 +30,10 @@ Dedicated test bot, real Telegram Bot API ([full log](evidence/live-telegram-run
 python3 bot.py                          # offline simulator in the terminal, no Telegram needed
 export TELEGRAM_BOT_TOKEN=...           # token of a dedicated test bot
 python3 live_once.py --live --test-chat <your chat id> --admin-chat <your chat id>
+# behind a proxy: TELEGRAM_USE_ENV_PROXY=1 python3 live_once.py ...
 ```
+
+Limits: one runner per bot, polling only, no groups, payments or load testing.
 
 Standard library only. The same structure fits order intake, booking requests, lead capture or support triage; a production version would add a long-running poller or webhook and real storage of inquiries (CRM, Google Sheets).
 
@@ -57,7 +62,7 @@ Future real testing requires secure token provisioning, owner-approved test reci
 
 ### Real transport
 
-`telegram_transport.py` provides getMe/getUpdates/sendMessage via the fixed HTTPS Telegram host. It disables redirects/proxies, limits responses, redacts transport errors and requires an explicit recipient allowlist. Tests inject fake responses: no network or valid credentials.
+`telegram_transport.py` provides getMe/getUpdates/sendMessage via the fixed HTTPS Telegram host. It disables redirects and ignores proxies unless `TELEGRAM_USE_ENV_PROXY=1`, limits responses, redacts transport errors and requires an explicit recipient allowlist. Tests inject fake responses: no network or valid credentials.
 
 `recovery.py` transactionally stores dialogue state, processed update IDs and an outbox in SQLite. Duplicate updates are ignored across restarts. `live_once.py` requires `--live` and explicit test/admin chat IDs; it performs one poll of up to 20 updates. A live run was made on 15.11.2026 (see evidence/live-telegram-run.md). SQLite errors stop cleanly without a traceback. Uncertain previous deliveries block all network calls.
 

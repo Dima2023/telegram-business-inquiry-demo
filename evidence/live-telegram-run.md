@@ -17,7 +17,15 @@ Conversation (Telegram Web, screenshot `live-telegram-chat.jpg`):
 | confirm (again) | Choose catalog or faq; select a service before confirming. — **no duplicate inquiry** |
 | catalog → CLEAN → 3 → confirm | Preview … x 3 → recorded, admin message `{"id": 2, "service": "CLEAN", "quantity": 3}` |
 
-Outbox after the run: 12 messages `delivered`, 0 `uncertain`; 10 updates processed, each exactly once.
+Database after the run (observed with SQLite queries on the runner's state file; message text omitted):
+
+```
+$ sqlite3 telegram-state.db "select count(*) from updates"            -> 10
+$ sqlite3 telegram-state.db "select status, count(*) from outbox group by status"  -> delivered|12
+$ inquiries in saved state (id, service, quantity)                      -> (1, REPORT, 2), (2, CLEAN, 3)
+```
+
+These counts show what this run recorded; they are not a proof of exactly-once processing in general.
 The first four messages were sent before the runner was polling, so their replies arrived together; from "confirm (again)" on, each message was answered right away.
 
 Not covered by this run: restart in the middle of a send, groups, several runners, load.

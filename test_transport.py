@@ -33,7 +33,6 @@ class Tests(unittest.TestCase):
   def send(request,timeout):seen.append(json.loads(request.data));return Response(b'{"ok":true,"result":[]}')
   api=TelegramAPI('123:TEST_ONLY',allowed_chats={7},sender=send)
   self.assertEqual(api.get_updates(50),[]); self.assertEqual(seen[0]['offset'],50)
-if __name__=='__main__':unittest.main()
 
 
 class ProxyOptInTests(unittest.TestCase):
@@ -52,3 +51,7 @@ class ProxyOptInTests(unittest.TestCase):
 
     def test_env_proxy_used_only_when_opted_in(self):
         self.assertEqual(self.https_proxy_for('1'), 'http://proxy.example:3128')
+
+
+if __name__ == "__main__":
+    unittest.main()
